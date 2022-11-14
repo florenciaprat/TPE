@@ -6,12 +6,10 @@ class productApiController{
     private $model;
     private $view;
     private $data;
-    private $authHelper;
 
     public function __construct(){
         $this->model = new ProductModel();
         $this->view = new ApiView();
-        $this->authHelper = new AuthApiHelper();
         // lee el body del request
         $this->data = file_get_contents("php://input");
     }
@@ -89,11 +87,6 @@ class productApiController{
 
     public function insertProduct($params = null){
          $product = $this->getData();
-         if (!$this->authHelper->isLoggedIn()) {
-             $this->view->response("No estas logeado", 401);
-             return;
-         }
-
         if (empty($product->name) || empty($product->milliliters) || empty($product->price) || empty($product->brand_ID)) {
             $this->view->response("Complete los datos", 400);
         } else {
@@ -105,11 +98,6 @@ class productApiController{
 
     public function updateProduct($params = null){
         $id = $params[':ID'];
-        // if (!$this->authHelper->isLoggedIn()) {
-        //     $this->view->response("No estas logeado", 401);
-        //     return;
-        // }
-
         $body = $this->getData();
         $product = $this->model->get($id);
 

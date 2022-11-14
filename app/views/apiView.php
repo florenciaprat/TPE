@@ -11,11 +11,11 @@ class apiView {
 
     private function _requestStatus($code){
         $status = array(
-          200 => "OK",//ESTE
-          201 => "Created", //ESTE
-          400 => "Bad request",//ESTE
-          401 => "Unauthorized",//PARA EL TOKEN
-          404 => "Not found",//ESTE
+          200 => "OK",
+          201 => "Created", 
+          400 => "Bad Request",
+          404 => "Not Found",
+          500=> "Internal Server Error"
         );
         return (isset($status[$code])) ? $status[$code] : $status[500]; //esto es un if
       }

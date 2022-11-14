@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-10-2022 a las 02:48:54
+-- Tiempo de generación: 14-11-2022 a las 23:52:47
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -48,6 +48,30 @@ INSERT INTO `brands` (`brand_ID`, `name`, `country`, `foundation`, `website`) VA
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `comments`
+--
+
+CREATE TABLE `comments` (
+  `comment_ID` int(11) NOT NULL,
+  `comment` varchar(200) NOT NULL,
+  `author` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `comments`
+--
+
+INSERT INTO `comments` (`comment_ID`, `comment`, `author`) VALUES
+(1, 'La mejor crema que he usado... la recomiendo 100%', 'Laura Lopez'),
+(2, 'Una de mis favoritas si o si', 'Gastón Diaz'),
+(3, 'Es una genialidad, cero oleosidad aunque transpires, cuando te aplicas tiene la textura de un bloqueador solar liviano, pero pasa 1 minuto y parece que no te hubieras puesto nada de lo liviana que es.', 'Luz Galles'),
+(4, 'Me la compré hoy! Veremos cómo me funciona...tengo piel de normal a grasa y necesito hidratación... espero que funcione porque las crema gel no me funcionó ', 'Juan rodriguez'),
+(5, 'Lo uso por las mañanas, ningún problema , se absorbe bastante rápido.', 'Antonella Mansilla'),
+(6, 'Lo uso hace 3 meses, es muy bueno el kit. Resultados increíbles.', 'Camila Moreno');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `products`
 --
 
@@ -56,21 +80,21 @@ CREATE TABLE `products` (
   `name` varchar(45) NOT NULL,
   `milliliters` int(11) NOT NULL,
   `price` double NOT NULL,
-  `brand_ID` int(11) NOT NULL
+  `brand_ID` int(11) NOT NULL,
+  `comment_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `products`
 --
 
-INSERT INTO `products` (`product_ID`, `name`, `milliliters`, `price`, `brand_ID`) VALUES
-(2, 'Serúm Revitalif', 30, 2995, 2),
-(3, 'Agua micelar', 400, 3.585, 8),
-(5, 'Gel facial exfoliante', 30, 1540, 13),
-(7, 'Agua micelar bifasica', 200, 2670, 12),
-(13, 'Crema Antiage Hidratante', 55, 2878, 2),
-(32, 'Serum antimanchas', 30, 2735, 13),
-(59, 'Crema reparadora', 120, 1200, 12);
+INSERT INTO `products` (`product_ID`, `name`, `milliliters`, `price`, `brand_ID`, `comment_ID`) VALUES
+(3, 'Contorno de Ojos', 120, 1200, 2, 4),
+(5, 'Gel facial exfoliante', 30, 1540, 13, 6),
+(7, 'Agua micelar bifasica', 200, 2670, 12, 4),
+(13, 'Crema Antiage Hidratante', 55, 2878, 2, 1),
+(32, 'Serum antimanchas', 30, 2735, 13, 5),
+(59, 'Crema reparadora', 120, 1200, 12, 2);
 
 -- --------------------------------------------------------
 
@@ -103,11 +127,19 @@ ALTER TABLE `brands`
   ADD KEY `company_ID` (`brand_ID`);
 
 --
+-- Indices de la tabla `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`comment_ID`),
+  ADD KEY `comment_ID` (`comment_ID`);
+
+--
 -- Indices de la tabla `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_ID`),
-  ADD KEY `company_ID` (`brand_ID`);
+  ADD KEY `company_ID` (`brand_ID`),
+  ADD KEY `comment_ID` (`comment_ID`);
 
 --
 -- Indices de la tabla `users`
@@ -123,13 +155,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `brand_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `brand_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT de la tabla `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `comment_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -145,7 +183,8 @@ ALTER TABLE `users`
 -- Filtros para la tabla `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`brand_ID`) REFERENCES `brands` (`brand_ID`);
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`brand_ID`) REFERENCES `brands` (`brand_ID`),
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`comment_ID`) REFERENCES `comments` (`comment_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

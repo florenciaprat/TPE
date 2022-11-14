@@ -14,6 +14,7 @@ $router->addRoute('products', 'POST', 'productApiController', 'insertProduct');
 $router->addRoute('products/:ID', 'PUT', 'productApiController', 'updateProduct'); 
 
 $router->addRoute("users/token", 'GET', 'AuthApiController', 'getToken');
+$router->addRoute('users/:ID', 'GET', 'ApiUserController', 'obtenerUsuario');
 // ejecuta la ruta (sea cual sea)
 $router->route($_GET["resource"], $_SERVER['REQUEST_METHOD']);
 
